@@ -1,0 +1,72 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Nov 29 16:20:27 2019
+
+@author: tusharwalaskar
+"""
+
+    
+
+annual_salary = float(input("The starting annual salary: "))
+total_cost = 1000000.0
+portion_down_payment = 0.25*total_cost
+rate_of_interest = 0.04
+epsilon = 100.0
+monthly_salary = annual_salary/12
+print("Monthly salary is ", monthly_salary)
+high = 0.5
+low = 0
+guess = (high + low)/2.0
+print("You will have to make down payment of ",portion_down_payment)
+bisectional_search = 0
+semi_raise = .07
+print("your monthly salary initially is ", monthly_salary)
+not_possible = False
+while(True):
+    bisectional_search = bisectional_search +1
+    month_count = 0.0
+    current_savings = 0
+    monthly_salary = annual_salary/12
+
+    while(month_count <36):
+          if portion_down_payment >= annual_salary*3:
+            print("This is not possible")
+            not_possible= True
+            break
+          interest = current_savings*(rate_of_interest)/12
+          current_savings = current_savings+ ((guess*monthly_salary)) + interest
+          #print("month_count", month_count)
+          if month_count%6 ==0 and month_count!=0:
+              monthly_salary= monthly_salary * (1+semi_raise)
+             # print("salary hiked to: ",monthly_salary)
+          month_count += 1
+          
+    if not_possible ==True:
+        break
+    
+    if abs(portion_down_payment - current_savings) <= epsilon:
+          print("Best Savings rate:  ", guess)
+          print("In 36 months you will have saved this much at this rate:  ",current_savings)
+          print("Bisectional search:  ", bisectional_search)
+          break
+    
+          
+    if current_savings > portion_down_payment+ epsilon:
+              high = guess
+            #  print("high",high)
+              guess = (high+low)/2.0
+              if low==high:
+                  print("High ceiling, Bisectional search", bisectional_search)
+                  print(current_savings)
+                  break
+              
+    if portion_down_payment > current_savings + epsilon:
+              low = guess
+            #  print("low", low)
+              guess = (high+low)/2.0
+              if low==high:
+                #  print("Bisectional search", bisectional_search)
+                 # print(current_savings)
+                  print("Not Possible with this salary")
+                  break
