@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Spyder Editor
+
+This is a temporary script file.
+"""
+
 # Problem Set 2, hangman.py
 # Name: 
 # Collaborators:
@@ -154,7 +161,7 @@ def hangman(secret_word):
     
     
     guesses = 0
-    letters_guessed = [None]*9
+    letters_guessed = []
     warning = 0
     print("Welcome to the game Hangman! ")
     print("I am thinking of a word that is ",len(secret_word),"long")
@@ -162,23 +169,33 @@ def hangman(secret_word):
     print("You have",guesses+9, "guesses left")
     print("Available letters: ",string.ascii_lowercase)
     for guesses in range(0,9):
-         
-         letters_guessed[guesses] = (input("Please guess a letter: "))
+         warning = 0
+         letters_guessed.append(input("Please guess a letter: "))
          letters_guessed[guesses] = letters_guessed[guesses].lower()
-         if letters_guessed[guesses] not in string.ascii_lowercase:
-             print("OOPS!!! You have entered wrong input! Please use letters only")
-             warning = warning+1
-         if warning == 3:
-            print("warning is 3")
-         if letters_guessed[guesses] in secret_word:
+         while(warning!=2):
+             if letters_guessed[guesses].isalpha() == True:
+                 break
+             if letters_guessed[guesses].isalpha() == False:
+                print("OOPS!!! You have entered wrong input! Please use letters only, ")
+                print("You have warning remaining: ",2-warning)
+                letters_guessed.append(input("Please guess a letter: "))
+                letters_guessed[guesses] = letters_guessed[guesses].lower()
+                warning +=1
+             if warning == 2:
+                print("warning is 3, 1 guess removed as penalty")
+                break
+         
+         
+                
+         
+         if letters_guessed[guesses] in secret_word and not '':
              print("Good guess!!!")
          else:
              print("oops! this letter is not in my word!")
-         guesses = guesses + 1
          if is_word_guessed(secret_word, letters_guessed) == True:
              print("You win!! word has been guessed",secret_word)
              break
-         print("You have", 9-guesses,'left')
+         print("You have",8-guesses,'left')
          
          print(get_guessed_word(secret_word, letters_guessed))
          print(get_available_letters(letters_guessed))
