@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Spyder Editor
-
-This is a temporary script file.
-"""
-
 # Problem Set 2, hangman.py
 # Name: 
 # Collaborators:
@@ -159,53 +152,94 @@ def hangman(secret_word):
     Follows the other limitations detailed in the problem write-up.
     '''
     
-    
+    count = 0   
     guesses = 0
     letters_guessed = []
     warning = 0
+    vowels ='aeiou'
     print("Welcome to the game Hangman! ")
     print("I am thinking of a word that is ",len(secret_word),"long")
     print("----------------------------------\n-----------\n-----")
-    print("You have",guesses+9, "guesses left")
+    print("You have",count+9, "guesses left")
     print("Available letters: ",string.ascii_lowercase)
-    for guesses in range(0,9):
+    while(guesses<20 and count<9):
+         unique = False 
          warning = 0
-         letters_guessed.append(input("Please guess a letter: "))
-         letters_guessed[guesses] = letters_guessed[guesses].lower()
+         test_input = input("Please guess a letter: ")
+         test_input = test_input.lower()
+         print(test_input)
          while(warning!=2):
-             if letters_guessed[guesses].isalpha() == True:
-                 break
-             if letters_guessed[guesses].isalpha() == False:
+             if test_input.isalpha() == True and test_input not in letters_guessed:
+                letters_guessed.append(test_input)
+                break
+             if test_input.isalpha() == True and test_input in letters_guessed:
+                print("This letter has been used once")
+                print("You have warning remaining: ",2-warning)
+                test_input =(input("Please guess a letter: "))
+                test_input =test_input.lower()        
+                warning +=1
+             if test_input.isalpha() == False:
                 print("OOPS!!! You have entered wrong input! Please use letters only, ")
                 print("You have warning remaining: ",2-warning)
-                letters_guessed.append(input("Please guess a letter: "))
-                letters_guessed[guesses] = letters_guessed[guesses].lower()
+                test_input =(input("Please guess a letter: "))
+                test_input =test_input.lower()        
                 warning +=1
              if warning == 2:
                 print("warning is 3, 1 guess removed as penalty")
+                letters_guessed.append(test_input)
                 break
+# =============================================================================
+#          while(guessed_warning!=2):
+#              if test_input not in letters_guessed:
+#                  letters_guessed.append(test_input)
+#                  break
+#                 
+#              if test_input in letters_guessed:
+#                 print("This letter has been guessed before ")
+#                 print("You have warning remaining: ",2-guessed_warning)
+#                 test_input =(input("Please guess a letter: "))
+#                 test_input.lower()
+#                 guessed_warning +=1
+#             
+#              if guessed_warning == 2:
+#                 print("warning is 3, 1 guess removed as penalty")
+#                 letters_guessed.append(test_input)
+#                 break
+# =============================================================================
+             
+         
+         print("You entered", test_input)
          
          
-                
-         
-         if letters_guessed[guesses] in secret_word and not '':
-             print("Good guess!!!")
+   
+         if test_input in secret_word and not '':
+                 if test_input not in letters_guessed[:-1]:
+                     print("Good guess!!!")
+                     count = count - 1
+    
          else:
              print("oops! this letter is not in my word!")
+             if test_input in vowels:
+                 count = count+1
+                 print("Since you guessed a wrong vowel, you lose 1 guess")
          if is_word_guessed(secret_word, letters_guessed) == True:
              print("You win!! word has been guessed",secret_word)
              break
-         print("You have",8-guesses,'left')
+         print("You have",8-count,'guesses left')
          
          print(get_guessed_word(secret_word, letters_guessed))
          print(get_available_letters(letters_guessed))
          print("===========================")
-         
+         guesses+=1
+         count+=1
  
     if is_word_guessed(secret_word, letters_guessed) == True:
              print("You win!! word has been guessed",secret_word)
+             print("Your winning score is", abs((8-count)*(len(set(secret_word)))))
     else:
          print("Sorry you lost, the word was ", secret_word)
+    
+    
 # =============================================================================
 # When you've completed your hangman function, scroll down to the bottom
 # of the file and uncomment the first two lines to test
