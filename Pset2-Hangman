@@ -74,22 +74,6 @@ def is_word_guessed(secret_word, letters_guessed):
     if len(secret_word)!= counter:
         return False 
     return check_boolean
-# =============================================================================
-#     
-#     for i in secret_word:
-#          check_boolean = False
-#          for j in letters_guessed:
-#              if i==j:
-#                  check_boolean = True
-#                  counter += 1                                
-#                  break
-#         
-#     if len(secret_word)!= counter:
-#        return False     
-#     else:
-#         return check_boolean
-# =============================================================================
-
 
 
 def get_guessed_word(secret_word, letters_guessed):
@@ -163,7 +147,7 @@ def hangman(secret_word):
     print("You have",count+9, "guesses left")
     print("Available letters: ",string.ascii_lowercase)
     while(guesses<20 and count<9):
-         unique = False 
+         
          warning = 0
          test_input = input("Please guess a letter: ")
          test_input = test_input.lower()
@@ -188,25 +172,7 @@ def hangman(secret_word):
                 print("warning is 3, 1 guess removed as penalty")
                 letters_guessed.append(test_input)
                 break
-# =============================================================================
-#          while(guessed_warning!=2):
-#              if test_input not in letters_guessed:
-#                  letters_guessed.append(test_input)
-#                  break
-#                 
-#              if test_input in letters_guessed:
-#                 print("This letter has been guessed before ")
-#                 print("You have warning remaining: ",2-guessed_warning)
-#                 test_input =(input("Please guess a letter: "))
-#                 test_input.lower()
-#                 guessed_warning +=1
-#             
-#              if guessed_warning == 2:
-#                 print("warning is 3, 1 guess removed as penalty")
-#                 letters_guessed.append(test_input)
-#                 break
-# =============================================================================
-             
+          
          
          print("You entered", test_input)
          
@@ -239,17 +205,6 @@ def hangman(secret_word):
     else:
          print("Sorry you lost, the word was ", secret_word)
     
-    
-# =============================================================================
-# When you've completed your hangman function, scroll down to the bottom
-# of the file and uncomment the first two lines to test
-#(hint: you might want to pick your own
-# secret_word while you're doing your own testing)
-
-
-# -----------------------------------
-hangman(choose_word(wordlist))
-
 
 def match_with_gaps(my_word, other_word):
     '''
@@ -261,10 +216,25 @@ def match_with_gaps(my_word, other_word):
         False otherwise: 
     '''
     # FILL IN YOUR CODE HERE AND DELETE "pass"
-    pass
-
-
-
+    my_word = my_word.replace(" ","")
+    my_word = my_word.lower()
+    other_word = other_word.replace(" ","")
+    other_word = other_word.lower()
+    counter =0
+    boolean = False
+    if len(my_word)!= len(other_word):
+        return False
+    while(counter<len(my_word)):
+        if my_word[counter] =="_" or my_word[counter]== other_word[counter]:
+            boolean = True
+        else:
+            boolean = False
+            break
+        counter+=1
+    return boolean   
+    
+print(match_with_gaps("Ap_l_","Apl"))       
+        
 def show_possible_matches(my_word):
     '''
     my_word: string with _ characters, current guess of secret word
@@ -276,7 +246,21 @@ def show_possible_matches(my_word):
 
     '''
     # FILL IN YOUR CODE HERE AND DELETE "pass"
-    pass
+    my_word = my_word.replace(" ","")
+    my_word = my_word.lower()
+    possible_matches=[]
+    for word in wordlist:
+        if match_with_gaps(my_word,word)==True:
+            possible_matches.append(word)
+     
+    if len(possible_matches)==0 :
+        print("No matches found")
+    else:
+        print(possible_matches)
+        
+        
+         
+show_possible_matches("t_e_s")
 
 
 
@@ -317,16 +301,17 @@ def hangman_with_hints(secret_word):
 # these two lines and run this file to test!
 # Hint: You might want to pick your own secret_word while you're testing.
 
-# =============================================================================
-# 
-# if __name__ == "__main__":
+## =============================================================================
+## 
+#if __name__ == "__main__":
+#     secret_word = choose_word(wordlist)
+#     hangman(secret_word)
 #     # pass
 # 
 #     # To test part 2, comment out the pass line above and
 #     # uncomment the following two lines.
 #     
-#     secret_word = choose_word(wordlist)
-#     hangman(secret_word)
+#     
 # 
 # =============================================================================
 ###############
